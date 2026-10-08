@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление проектами и задачами</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app-container" id="app">
+    <header class="app-header">
+        <h1>
+            <svg class="header-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d="M9 5H6a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3"/>
+                <rect x="9" y="2" width="6" height="5" rx="1"/>
+                <path d="M8 12h8M8 16h8"/>
+            </svg>
+            <span>Управление проектами</span>
+        </h1>
+        <div class="header-actions">
+            <button class="btn btn-outline btn-sm" id="exportBtn">⬇ Экспорт</button>
+            <button class="btn btn-outline btn-sm" id="importBtn">⬆ Импорт</button>
+            <input type="file" id="fileInput" accept=".json" hidden>
+        </div>
+    </header>
+
+    <p id="storageStatus" role="alert" hidden></p>
+    <div class="stats-grid" id="statsContainer">
+        <div class="stat-item"><span class="number" id="statProjects">0</span><div class="label">Проектов</div></div>
+        <div class="stat-item"><span class="number" id="statTotal">0</span><div class="label">Всего задач</div></div>
+        <div class="stat-item"><span class="number" id="statDone">0</span><div class="label">Выполнено</div></div>
+        <div class="stat-item"><span class="number" id="statActive">0</span><div class="label">Активных</div></div>
+    </div>
+    <div class="main-grid">
+        <aside class="projects-panel">
+            <h3>
+                <span>📁 Проекты</span>
+                <span id="projectCount">0</span>
+            </h3>
+            <ul class="project-list" id="projectList"></ul>
+            <div class="add-project-form">
+                <input type="text" id="projectInput" placeholder="Название проекта..." maxlength="40">
+                <button class="btn btn-primary btn-sm" id="addProjectBtn" aria-label="Добавить проект">+</button>
+            </div>
+        </aside>
+        <section class="tasks-panel">
+            <div class="tasks-header">
+                <h2 id="currentProjectTitle">Задачи <span class="project-name">— выберите проект</span></h2>
+            </div>
+            <div class="add-task-form">
+                <input type="text" id="taskInput" placeholder="Текст задачи..." maxlength="100" aria-label="Текст новой задачи">
+                <select id="prioritySelect" aria-label="Приоритет новой задачи">
+                    <option value="high">🔴 Высокий</option>
+                    <option value="medium" selected>🟡 Средний</option>
+                    <option value="low">🟢 Низкий</option>
+                </select>
+                <label class="deadline-field" for="dueDateInput">Срок
+                    <input type="date" id="dueDateInput" min="0001-01-01" max="9999-12-31">
+                </label>
+                <button class="btn btn-primary" id="addTaskBtn">Добавить</button>
+            </div>
+            <ul class="task-list" id="taskList"></ul>
+            <div id="emptyMessage" class="empty-tasks">Нет задач в этом проекте</div>
+        </section>
+    </div>
+</div>
+
+<dialog id="taskEditor" class="task-editor" aria-labelledby="editorTitle">
+    <form id="editTaskForm" novalidate>
+        <h2 id="editorTitle">Редактирование задачи</h2>
+        <label for="editTaskText">Текст задачи
+            <input id="editTaskText" type="text" maxlength="100" required>
+        </label>
+        <label for="editTaskPriority">Приоритет
+            <select id="editTaskPriority">
+                <option value="high">Высокий</option>
+                <option value="medium">Средний</option>
+                <option value="low">Низкий</option>
+            </select>
+        </label>
+        <label for="editTaskDueDate">Срок выполнения (необязательно)
+            <input id="editTaskDueDate" type="date" min="0001-01-01" max="9999-12-31">
+        </label>
+        <p id="editTaskError" class="editor-error" role="alert" hidden></p>
+        <div class="editor-actions">
+            <button id="cancelEditTaskBtn" type="button" class="btn btn-outline">Отмена</button>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        </div>
+    </form>
+</dialog>
+
+<script src="app.js"></script>
+</body>
+</html>
